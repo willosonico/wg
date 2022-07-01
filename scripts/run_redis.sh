@@ -1,1 +1,1 @@
-sudo docker-compose -f ../server/redis/docker-compose.yml up
+sudo docker-compose -f server/redis/docker-compose.yml up

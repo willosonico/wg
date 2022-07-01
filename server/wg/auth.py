@@ -40,6 +40,8 @@ def signup():
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
+    if os.environ['DEVELOPMENT'] == '0':
+        return redirect('/login')
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')

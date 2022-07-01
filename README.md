@@ -6,7 +6,7 @@
     TODO : dockerize the client
 
     cp .env.client.example .env.client
-    bash run_client.sh to start the client
+    bash scripts/run_client.sh to start the client
 
 ## Server
 
@@ -18,8 +18,8 @@
     IMPORTANT : to enable signup set DEVELOPMENT=1
 
     cp server/wg/db.sqlite.seed server/wg/db.sqlite
-    bash run_redis.sh to start server
-    bash run_server.sh to start flask
+    bash scripts/run_redis.sh to start server
+    bash scripts/run_server.sh to start flask
 
     IMPORTANT : after signup set DEVELOPMENT=0
     IMPORTANT : in production set FLASK_DEBUG=0

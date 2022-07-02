@@ -3,13 +3,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-  Welcome, {{ name }}!
+    <h1 class="title">
+        Welcome, {{ name }}!
 
-  <img src=""/>
+        <img id="img" onload="load_img()"/>
 
-  <script lang="javascript">
-
-  </script>
-</h1>
+        <script lang="javascript">
+            function load_img() {
+                console.log('load_img')
+                $('#img').attr('src', '/preview/img?ts='+Date.now())
+            }
+            load_img()
+        </script>
+    </h1>
 {% endblock %}

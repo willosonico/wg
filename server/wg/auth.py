@@ -1,13 +1,15 @@
 # auth.py
 
 import os
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, send_file, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
+import redis
 
 auth = Blueprint('auth', __name__)
+redis = redis = redis.StrictRedis.from_url(os.environ['REDIS_URL'])
 
 @auth.route('/login')
 def login():
@@ -37,6 +39,23 @@ def signup():
         return render_template('signup.html')
     else:
         return redirect('/login')
+
+@auth.route('/preview/<readerId>')
+@login_required
+def preview(readerId):
+    try:
+        # reading from redis
+        key = str(readerId)
+        img1_bytes_ = redis.get(key)
+
+        response = make_response(img1_bytes_)
+        response.headers['Content-Type'] = 'image/jpeg'
+    except Exception as e:
+        print(e)
+        filename = 'preview_not_available.png'
+        return send_file(filename, mimetype='image/png')
+
+    return response
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():

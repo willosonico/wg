@@ -39,7 +39,10 @@ def on_message(bus: Gst.Bus, message: Gst.Message, loop: GObject.MainLoop):
 
     return True
 
+
 i = 0
+
+
 def on_buffer(appsink: GstApp.AppSink, data) -> Gst.FlowReturn:
     global i
 
@@ -63,8 +66,8 @@ GObject.threads_init()
 Gst.init(None)
 
 pipelineString = "v4l2src device={usb_device} \
-              ! identity sync=true ! timeoverlay ! jpegenc \
-              ! appsink name=sink emit-signals=true max-buffers=1 drop=true".format(usb_device=os.environ['USB_DEVICE'])
+              ! identity sync=true ! timeoverlay ! queue max-size-buffers=1 leaky=downstream ! jpegenc quality={jpeg_quality} \
+              ! appsink name=sink emit-signals=true max-buffers=1 drop=true".format(usb_device=os.environ['USB_DEVICE'], jpeg_quality=os.environ['JPEG_QUALITY'])
 
 GObject.threads_init()
 Gst.init(None)
@@ -89,6 +92,7 @@ loop = GObject.MainLoop()
 bus.connect("message", on_message, loop)
 
 print("starting gstreamer loop")
+print("sending every", os.environ['SEND_FRAME_INTERVAL'], "frames")
 
 loop.run()
 

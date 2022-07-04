@@ -66,7 +66,7 @@ GObject.threads_init()
 Gst.init(None)
 
 pipelineString = "v4l2src device={usb_device} \
-              ! identity sync=true ! timeoverlay ! queue max-size-buffers=1 leaky=downstream ! jpegenc quality={jpeg_quality} \
+              ! identity sync=true ! clockoverlay time-format=\"%e-%h-%G %r\" ! queue max-size-buffers=1 leaky=downstream ! jpegenc quality={jpeg_quality} \
               ! appsink name=sink emit-signals=true max-buffers=1 drop=true".format(usb_device=os.environ['USB_DEVICE'], jpeg_quality=os.environ['JPEG_QUALITY'])
 
 GObject.threads_init()
